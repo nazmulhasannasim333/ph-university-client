@@ -3,13 +3,16 @@ import { Outlet } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import { useAppDispatch } from "../../redux/hooks";
 import { logout } from "../../redux/features/auth/authSlice";
+import { toast } from "sonner";
 const { Header, Content } = Layout;
 
 const MainLayout = () => {
   const dispatch = useAppDispatch();
 
   const handleLogout = () => {
+    const toastId = toast.loading("loading...");
     dispatch(logout());
+    toast.success("Logged out", { id: toastId, duration: 2000 });
   };
 
   return (
