@@ -17,8 +17,6 @@ const AcademicDepartment = () => {
     })
   );
 
-  console.log(tableData);
-
   const columns: TableColumnsType<TTableData> = [
     {
       title: "Academic Department",
