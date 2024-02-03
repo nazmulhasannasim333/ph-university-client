@@ -15,7 +15,7 @@ const AcademicFaculty = () => {
 
   const columns: TableColumnsType<TTableData> = [
     {
-      title: "Name",
+      title: "Academic Faculty",
       key: "name",
       dataIndex: "name",
     },
