@@ -7,7 +7,6 @@ export type TTableData = Pick<TAcademicFaculty, "name">;
 const AcademicFaculty = () => {
   const { data: facultyData, isFetching } =
     useGetAllAcademicFacultyQuery(undefined);
-  console.log(facultyData);
 
   const tableData = facultyData?.data?.map(({ _id, name }) => ({
     key: _id,
