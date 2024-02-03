@@ -16,6 +16,7 @@ import { TAcademicSemester } from "../../../types/academicManagement.type";
 
 const CreateAcademicSemester = () => {
   const [addAcademicSemester] = useAddAcademicSemesterMutation();
+
   const onSubmit = async (data: FieldValues) => {
     const toastId = toast.loading("Creating semester...");
     const name = semesterOptions[Number(data.name) - 1]?.label;
