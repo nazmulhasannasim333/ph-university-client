@@ -14,14 +14,14 @@ import { TResponse } from "../../../types";
 import { TAcademicDepartment } from "../../../types/academicManagement.type";
 
 const CreateAcademicDepartment = () => {
-  const { data: facultyData } = useGetAllAcademicFacultyQuery(undefined);
+  const { data: facultyData, isLoading: fIsLoading } =
+    useGetAllAcademicFacultyQuery(undefined);
   const [addAcademicDepartment] = useAddAcademicDepartmentMutation();
 
-  const academicFacultyOptions =
-    facultyData?.data?.map((faculty) => ({
-      value: faculty?._id,
-      label: faculty?.name,
-    })) || [];
+  const academicFacultyOptions = facultyData?.data?.map((faculty) => ({
+    value: faculty?._id,
+    label: faculty?.name,
+  }));
 
   const onSubmit = async (data: FieldValues) => {
     const toastId = toast.loading("Creating department...");
@@ -55,6 +55,7 @@ const CreateAcademicDepartment = () => {
             label="Academic Faculty"
             name="academicFaculty"
             options={academicFacultyOptions}
+            disabled={fIsLoading}
           />
           <Button htmlType="submit">Submit</Button>
         </PHForm>
