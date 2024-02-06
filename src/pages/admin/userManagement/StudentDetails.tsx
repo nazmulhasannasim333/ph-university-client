@@ -1,4 +1,4 @@
-import { Card, Col, Divider, Image, Row } from "antd";
+import { Alert, Card, Col, Divider, Image, Row, Spin } from "antd";
 import { useParams } from "react-router-dom";
 import { useGetStudentDetailsQuery } from "../../../redux/features/admin/userManagementApi";
 import Title from "antd/es/typography/Title";
@@ -9,13 +9,20 @@ const StudentDetails = () => {
   const { studentId } = useParams();
   const { data: studentDetails, isFetching } =
     useGetStudentDetailsQuery(studentId);
-  console.log(studentDetails);
   const details = studentDetails?.data;
 
   // console.log(details);
 
   if (isFetching) {
-    return <h1>Loading...</h1>;
+    return (
+      <Spin tip="Loading...">
+        <Alert
+          message="Wait......"
+          description="Please wait for loading student details."
+          type="success"
+        />
+      </Spin>
+    );
   }
 
   return (
@@ -28,7 +35,7 @@ const StudentDetails = () => {
               src={
                 details.profileImg
                   ? details?.profileImg
-                  : "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+                  : "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png"
               }
             />
           </Col>

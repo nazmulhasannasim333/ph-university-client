@@ -1,58 +1,31 @@
+import { Alert, Button, Col, Divider, Form, Input, Row, Spin } from "antd";
 import PHForm from "../../../components/form/PHForm";
-import { Controller, FieldValues } from "react-hook-form";
 import PHInput from "../../../components/form/PHInput";
-import { Button, Col, Divider, Form, Input, Row } from "antd";
+import PHSelect from "../../../components/form/PHSelect";
+import PHDatePicker from "../../../components/form/PHDatePicker";
+import { Controller, FieldValues } from "react-hook-form";
 import {
   bloodGroupOptions,
   genderOptions,
 } from "../../../constants/user.const";
-import PHSelect from "../../../components/form/PHSelect";
-import PHDatePicker from "../../../components/form/PHDatePicker";
 import {
   useGetAllAcademicDepartmentQuery,
   useGetAllSemesterQuery,
 } from "../../../redux/features/admin/academicManagementApi";
-import { useAddStudentMutation } from "../../../redux/features/admin/userManagementApi";
+import {
+  useGetStudentDetailsQuery,
+  useUpdateStudentDetailsMutation,
+} from "../../../redux/features/admin/userManagementApi";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 import { TResponse, TStudent } from "../../../types";
 
-const studentDefaultValues = {
-  name: {
-    firstName: "I am ",
-    middleName: "Student",
-    lastName: "Number 1",
-  },
-  gender: "male",
-  email: "student333@gmail.com",
-  bloodGroup: "A+",
-
-  contactNo: "1235678",
-  emergencyContactNo: "987-654-3210",
-  presentAddress: "123 Main St, Cityville",
-  permanentAddress: "456 Oak St, Townsville",
-
-  guardian: {
-    fatherName: "James Doe",
-    fatherOccupation: "Engineer",
-    fatherContactNo: "111-222-3333",
-    motherName: "Mary Doe",
-    motherOccupation: "Teacher",
-    motherContactNo: "444-555-6666",
-  },
-
-  localGuardian: {
-    name: "Alice Johnson",
-    occupation: "Doctor",
-    contactNo: "777-888-9999",
-    address: "789 Pine St, Villageton",
-  },
-
-  admissionSemester: "65be0a97b451cd0ed5862223",
-  academicDepartment: "65bb5ca2a439868651eead2e",
-};
-
-const CreateStudent = () => {
-  const [addStudent] = useAddStudentMutation();
+const StudentUpdate = () => {
+  const [updateStudent] = useUpdateStudentDetailsMutation();
+  const navigate = useNavigate();
+  const { studentId } = useParams();
+  const { data: studentDetails, isLoading: studentIsLoading } =
+    useGetStudentDetailsQuery(studentId);
   const { data: sData, isLoading: sIsLoading } =
     useGetAllSemesterQuery(undefined);
 
@@ -70,31 +43,50 @@ const CreateStudent = () => {
   }));
 
   const onSubmit = async (data: FieldValues) => {
-    const toastId = toast.loading("Creating student...");
+    const toastId = toast.loading("Updating student...");
+    const admissionSemester = data.admissionSemester._id;
+    const academicDepartment = data.academicDepartment._id;
+
+    const studentFields = { ...data, academicDepartment, admissionSemester };
+
     const studentData = {
-      password: "student123",
-      student: data,
+      student: studentFields,
     };
 
-    const formData = new FormData();
-    formData.append("data", JSON.stringify(studentData));
-    formData.append("file", data.image);
     try {
-      const res = (await addStudent(formData)) as TResponse<TStudent>;
+      console.log(studentData);
+      const res = (await updateStudent({
+        studentData,
+        studentId,
+      })) as TResponse<TStudent>;
+      console.log(res);
       if (res.error) {
         toast.error(res.error.data.message, { id: toastId });
       } else {
-        toast.success("Student created", { id: toastId });
+        toast.success("Student updated", { id: toastId });
+        navigate(`admin/students-data/${studentId}`);
       }
-    } catch (err) {
-      toast.error("Something went wrong", { id: toastId });
+    } catch (error) {
+      toast.success("Student created", { id: toastId });
     }
   };
+
+  if (studentIsLoading) {
+    return (
+      <Spin tip="Loading...">
+        <Alert
+          message="Wait......"
+          description="Please wait for loading student details."
+          type="success"
+        />
+      </Spin>
+    );
+  }
 
   return (
     <Row justify="center">
       <Col span={24}>
-        <PHForm onSubmit={onSubmit} defaultValues={studentDefaultValues}>
+        <PHForm onSubmit={onSubmit} defaultValues={studentDetails?.data}>
           <Divider>Personal Info.</Divider>
           <Row gutter={8}>
             <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
@@ -110,7 +102,10 @@ const CreateStudent = () => {
               <PHSelect options={genderOptions} name="gender" label="Gender" />
             </Col>
             <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
-              <PHDatePicker name="dateOfBirth" label="Date of birth" />
+              <PHDatePicker
+                name={studentDetails?.data?.dateOfBirth ? "" : "dateOfBirth"}
+                label="Date of birth"
+              />
             </Col>
             <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
               <PHSelect
@@ -243,7 +238,7 @@ const CreateStudent = () => {
               <PHSelect
                 options={semesterOptions}
                 disabled={sIsLoading}
-                name="admissionSemester"
+                name="admissionSemester._id"
                 label="Admission Semester"
               />
             </Col>
@@ -251,7 +246,7 @@ const CreateStudent = () => {
               <PHSelect
                 options={departmentOptions}
                 disabled={dIsLoading}
-                name="academicDepartment"
+                name="academicDepartment._id"
                 label="Admission Department"
               />
             </Col>
@@ -264,4 +259,4 @@ const CreateStudent = () => {
   );
 };
 
-export default CreateStudent;
+export default StudentUpdate;
