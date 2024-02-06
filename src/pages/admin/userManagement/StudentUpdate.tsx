@@ -1,9 +1,9 @@
-import { Alert, Button, Col, Divider, Form, Input, Row, Spin } from "antd";
+import { Alert, Button, Col, Divider, Row, Spin } from "antd";
 import PHForm from "../../../components/form/PHForm";
 import PHInput from "../../../components/form/PHInput";
 import PHSelect from "../../../components/form/PHSelect";
 import PHDatePicker from "../../../components/form/PHDatePicker";
-import { Controller, FieldValues } from "react-hook-form";
+import { FieldValues } from "react-hook-form";
 import {
   bloodGroupOptions,
   genderOptions,
@@ -64,7 +64,7 @@ const StudentUpdate = () => {
         toast.error(res.error.data.message, { id: toastId });
       } else {
         toast.success("Student updated", { id: toastId });
-        navigate(`admin/students-data/${studentId}`);
+        navigate(`/admin/student-data/${studentId}`);
       }
     } catch (error) {
       toast.success("Student created", { id: toastId });
@@ -112,21 +112,6 @@ const StudentUpdate = () => {
                 options={bloodGroupOptions}
                 name="bloodGroup"
                 label="Blood group"
-              />
-            </Col>
-            <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
-              <Controller
-                name="image"
-                render={({ field: { onChange, value, ...field } }) => (
-                  <Form.Item label="Picture">
-                    <Input
-                      type="file"
-                      value={value?.fileName}
-                      {...field}
-                      onChange={(e) => onChange(e.target.files?.[0])}
-                    />
-                  </Form.Item>
-                )}
               />
             </Col>
           </Row>

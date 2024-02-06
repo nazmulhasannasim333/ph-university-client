@@ -44,11 +44,21 @@ const userManagementApi = baseApi.injectEndpoints({
     }),
     updateStudentDetails: builder.mutation({
       query: ({ studentData, studentId }) => {
-        console.log({ studentId, studentData });
         return {
           url: `/students/${studentId}`,
           method: "PATCH",
           body: studentData,
+        };
+      },
+      invalidatesTags: ["user-management"],
+    }),
+    changeUserStatus: builder.mutation({
+      query: ({ userStatus, userId }) => {
+        console.log({ userStatus, userId });
+        return {
+          url: `/users/change-status/${userId}`,
+          method: "POST",
+          body: userStatus,
         };
       },
       invalidatesTags: ["user-management"],
@@ -61,4 +71,5 @@ export const {
   useGetAllStudentsQuery,
   useGetStudentDetailsQuery,
   useUpdateStudentDetailsMutation,
+  useChangeUserStatusMutation,
 } = userManagementApi;
