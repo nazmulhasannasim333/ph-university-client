@@ -182,7 +182,7 @@ const StudentDetails = () => {
               </span>
             </Title>
             <Title level={5}>
-              ContactNo: {}
+              Contact No: {}
               <span style={{ color: "#878584" }}>
                 {details?.localGuardian?.contactNo}
               </span>

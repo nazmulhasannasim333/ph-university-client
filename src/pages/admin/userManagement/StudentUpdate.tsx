@@ -46,6 +46,7 @@ const StudentUpdate = () => {
     const toastId = toast.loading("Updating student...");
     const admissionSemester = data.admissionSemester._id;
     const academicDepartment = data.academicDepartment._id;
+    console.log(data.dateOfBirth);
 
     const studentFields = { ...data, academicDepartment, admissionSemester };
 
@@ -103,7 +104,7 @@ const StudentUpdate = () => {
             </Col>
             <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
               <PHDatePicker
-                name={studentDetails?.data?.dateOfBirth ? "" : "dateOfBirth"}
+                name={!studentDetails?.data?.dateOfBirth ? "dateOfBirth" : ""}
                 label="Date of birth"
               />
             </Col>

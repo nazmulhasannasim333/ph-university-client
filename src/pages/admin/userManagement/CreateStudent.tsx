@@ -15,44 +15,11 @@ import {
 import { useAddStudentMutation } from "../../../redux/features/admin/userManagementApi";
 import { toast } from "sonner";
 import { TResponse, TStudent } from "../../../types";
-
-const studentDefaultValues = {
-  name: {
-    firstName: "I am ",
-    middleName: "Student",
-    lastName: "Number 1",
-  },
-  gender: "male",
-  email: "student333@gmail.com",
-  bloodGroup: "A+",
-
-  contactNo: "1235678",
-  emergencyContactNo: "987-654-3210",
-  presentAddress: "123 Main St, Cityville",
-  permanentAddress: "456 Oak St, Townsville",
-
-  guardian: {
-    fatherName: "James Doe",
-    fatherOccupation: "Engineer",
-    fatherContactNo: "111-222-3333",
-    motherName: "Mary Doe",
-    motherOccupation: "Teacher",
-    motherContactNo: "444-555-6666",
-  },
-
-  localGuardian: {
-    name: "Alice Johnson",
-    occupation: "Doctor",
-    contactNo: "777-888-9999",
-    address: "789 Pine St, Villageton",
-  },
-
-  admissionSemester: "65be0a97b451cd0ed5862223",
-  academicDepartment: "65bb5ca2a439868651eead2e",
-};
+import { useNavigate } from "react-router-dom";
 
 const CreateStudent = () => {
   const [addStudent] = useAddStudentMutation();
+  const navigate = useNavigate();
   const { data: sData, isLoading: sIsLoading } =
     useGetAllSemesterQuery(undefined);
 
@@ -85,6 +52,7 @@ const CreateStudent = () => {
         toast.error(res.error.data.message, { id: toastId });
       } else {
         toast.success("Student created", { id: toastId });
+        navigate(`/admin/students-data`);
       }
     } catch (err) {
       toast.error("Something went wrong", { id: toastId });
@@ -94,7 +62,7 @@ const CreateStudent = () => {
   return (
     <Row justify="center">
       <Col span={24}>
-        <PHForm onSubmit={onSubmit} defaultValues={studentDefaultValues}>
+        <PHForm onSubmit={onSubmit}>
           <Divider>Personal Info.</Divider>
           <Row gutter={8}>
             <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
