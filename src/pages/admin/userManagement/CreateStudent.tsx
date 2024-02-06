@@ -50,8 +50,7 @@ const studentDefaultValues = {
 };
 
 const CreateStudent = () => {
-  const [addStudent, { data, error }] = useAddStudentMutation();
-  console.log({ data, error });
+  const [addStudent] = useAddStudentMutation();
   const { data: sData, isLoading: sIsLoading } =
     useGetAllSemesterQuery(undefined);
 
@@ -69,7 +68,6 @@ const CreateStudent = () => {
   }));
 
   const onSubmit = async (data: FieldValues) => {
-    // console.log(data);
     const studentData = {
       password: "student123",
       student: data,
@@ -79,8 +77,6 @@ const CreateStudent = () => {
     formData.append("data", JSON.stringify(studentData));
     formData.append("file", data.image);
     await addStudent(formData);
-
-    console.log(Object.fromEntries(formData));
   };
 
   return (
