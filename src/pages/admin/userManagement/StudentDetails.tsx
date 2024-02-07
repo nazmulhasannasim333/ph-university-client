@@ -46,7 +46,7 @@ const StudentDetails = () => {
               <span style={{ color: "#736d6d" }}>{details?.id}</span>
             </Title>
             <Title level={5}>
-              Roll: {}
+              Gender: {}
               <span style={{ color: "#736d6d" }}>{details?.gender}</span>
             </Title>
             <Title level={5}>

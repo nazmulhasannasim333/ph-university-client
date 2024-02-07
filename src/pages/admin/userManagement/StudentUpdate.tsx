@@ -46,21 +46,24 @@ const StudentUpdate = () => {
     const toastId = toast.loading("Updating student...");
     const admissionSemester = data.admissionSemester._id;
     const academicDepartment = data.academicDepartment._id;
-    console.log(data.dateOfBirth);
+    const dateOfBirth = data.birthday;
 
-    const studentFields = { ...data, academicDepartment, admissionSemester };
+    const studentFields = {
+      ...data,
+      academicDepartment,
+      admissionSemester,
+      dateOfBirth,
+    };
 
     const studentData = {
       student: studentFields,
     };
 
     try {
-      console.log(studentData);
       const res = (await updateStudent({
         studentData,
         studentId,
       })) as TResponse<TStudent>;
-      console.log(res);
       if (res.error) {
         toast.error(res.error.data.message, { id: toastId });
       } else {
@@ -103,10 +106,7 @@ const StudentUpdate = () => {
               <PHSelect options={genderOptions} name="gender" label="Gender" />
             </Col>
             <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
-              <PHDatePicker
-                name={!studentDetails?.data?.dateOfBirth ? "dateOfBirth" : ""}
-                label="Date of birth"
-              />
+              <PHDatePicker name="birthday" label="Date of birth" />
             </Col>
             <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
               <PHSelect
