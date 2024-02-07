@@ -1,4 +1,9 @@
-import { TQueryParam, TResponseRedux, TStudent } from "../../../types";
+import {
+  TFaculty,
+  TQueryParam,
+  TResponseRedux,
+  TStudent,
+} from "../../../types";
 import { baseApi } from "../../api/baseApi";
 
 const userManagementApi = baseApi.injectEndpoints({
@@ -63,6 +68,57 @@ const userManagementApi = baseApi.injectEndpoints({
       },
       invalidatesTags: ["user-management"],
     }),
+    getAllFaculties: builder.query({
+      query: (args) => {
+        const params = new URLSearchParams();
+
+        if (args) {
+          args.forEach((item: TQueryParam) => {
+            params.append(item.name, item.value as string);
+          });
+        }
+
+        return {
+          url: "/faculties",
+          method: "GET",
+          params: params,
+        };
+      },
+      transformResponse: (response: TResponseRedux<TFaculty[]>) => {
+        return {
+          data: response.data,
+          meta: response.meta,
+        };
+      },
+      providesTags: ["user-management"],
+    }),
+    addFaculty: builder.mutation({
+      query: (data) => {
+        return {
+          url: `/users/create-faculty`,
+          method: "POST",
+          body: data,
+        };
+      },
+      invalidatesTags: ["user-management"],
+    }),
+    getFacultyDetails: builder.query({
+      query: (facultyId) => ({
+        url: `/faculties/${facultyId}`,
+        method: "GET",
+      }),
+      providesTags: ["user-management"],
+    }),
+    updateFacultyDetails: builder.mutation({
+      query: ({ facultyData, facultyId }) => {
+        return {
+          url: `/faculties/${facultyId}`,
+          method: "PATCH",
+          body: facultyData,
+        };
+      },
+      invalidatesTags: ["user-management"],
+    }),
   }),
 });
 
@@ -72,4 +128,8 @@ export const {
   useGetStudentDetailsQuery,
   useUpdateStudentDetailsMutation,
   useChangeUserStatusMutation,
+  useAddFacultyMutation,
+  useGetAllFacultiesQuery,
+  useGetFacultyDetailsQuery,
+  useUpdateFacultyDetailsMutation,
 } = userManagementApi;

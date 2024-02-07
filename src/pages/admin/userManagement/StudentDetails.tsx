@@ -3,15 +3,12 @@ import { useParams } from "react-router-dom";
 import { useGetStudentDetailsQuery } from "../../../redux/features/admin/userManagementApi";
 import Title from "antd/es/typography/Title";
 import moment from "moment";
-// const { Text } = Typography;
 
 const StudentDetails = () => {
   const { studentId } = useParams();
   const { data: studentDetails, isFetching } =
     useGetStudentDetailsQuery(studentId);
   const details = studentDetails?.data;
-
-  // console.log(details);
 
   if (isFetching) {
     return (
@@ -131,12 +128,6 @@ const StudentDetails = () => {
           <Col span={24} md={{ span: 12 }} lg={{ span: 12 }}>
             <Divider>Guardian</Divider>
             <Title level={5}>
-              Father ContactNo: {}
-              <span style={{ color: "#878584" }}>
-                {details?.guardian?.fatherContactNo}
-              </span>
-            </Title>
-            <Title level={5}>
               Father Name: {}
               <span style={{ color: "#878584" }}>
                 {details?.guardian?.fatherName}
@@ -149,9 +140,9 @@ const StudentDetails = () => {
               </span>
             </Title>
             <Title level={5}>
-              Mother ContactNo: {}
+              Father ContactNo: {}
               <span style={{ color: "#878584" }}>
-                {details?.guardian?.motherContactNo}
+                {details?.guardian?.fatherContactNo}
               </span>
             </Title>
             <Title level={5}>
@@ -164,6 +155,12 @@ const StudentDetails = () => {
               Mother Occupation: {}
               <span style={{ color: "#878584" }}>
                 {details?.guardian?.motherOccupation}
+              </span>
+            </Title>
+            <Title level={5}>
+              Mother ContactNo: {}
+              <span style={{ color: "#878584" }}>
+                {details?.guardian?.motherContactNo}
               </span>
             </Title>
           </Col>

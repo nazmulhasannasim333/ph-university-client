@@ -1,23 +1,28 @@
+import { Alert, Button, Col, Divider, Row, Spin } from "antd";
 import PHForm from "../../../components/form/PHForm";
-import { Controller, FieldValues } from "react-hook-form";
 import PHInput from "../../../components/form/PHInput";
-import { Button, Col, Divider, Form, Input, Row } from "antd";
+import PHSelect from "../../../components/form/PHSelect";
+import PHDatePicker from "../../../components/form/PHDatePicker";
+import { FieldValues } from "react-hook-form";
 import {
   bloodGroupOptions,
   genderOptions,
 } from "../../../constants/user.const";
-import PHSelect from "../../../components/form/PHSelect";
-import PHDatePicker from "../../../components/form/PHDatePicker";
 import { useGetAllAcademicDepartmentQuery } from "../../../redux/features/admin/academicManagementApi";
-import { useAddFacultyMutation } from "../../../redux/features/admin/userManagementApi";
+import {
+  useGetFacultyDetailsQuery,
+  useUpdateFacultyDetailsMutation,
+} from "../../../redux/features/admin/userManagementApi";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 import { TFaculty, TResponse } from "../../../types";
-import { useNavigate } from "react-router-dom";
 
-const CreateFaculty = () => {
-  const [addFaculty] = useAddFacultyMutation();
+const FacultyUpdate = () => {
+  const [updateFaculty] = useUpdateFacultyDetailsMutation();
   const navigate = useNavigate();
-
+  const { facultyId } = useParams();
+  const { data: facultyDetails, isLoading: facultyIsLoading } =
+    useGetFacultyDetailsQuery(facultyId);
   const { data: dData, isLoading: dIsLoading } =
     useGetAllAcademicDepartmentQuery(undefined);
 
@@ -27,33 +32,53 @@ const CreateFaculty = () => {
   }));
 
   const onSubmit = async (data: FieldValues) => {
-    const toastId = toast.loading("Creating faculty...");
-    const studentData = {
-      password: "faculty123",
-      faculty: data,
+    const toastId = toast.loading("Updating faculty...");
+    const academicDepartment = data.academicDepartment._id;
+    const dateOfBirth = data.birthday;
+
+    const facultyFields = {
+      ...data,
+      academicDepartment,
+      dateOfBirth,
     };
 
-    const formData = new FormData();
-    formData.append("data", JSON.stringify(studentData));
-    formData.append("file", data.image);
+    const facultyData = {
+      faculty: facultyFields,
+    };
+
     try {
-      const res = (await addFaculty(formData)) as TResponse<TFaculty>;
+      const res = (await updateFaculty({
+        facultyData,
+        facultyId,
+      })) as TResponse<TFaculty>;
       console.log(res);
       if (res.error) {
         toast.error(res.error.data.message, { id: toastId });
       } else {
-        toast.success("Faculty created", { id: toastId });
-        navigate(`/admin/faculties-data`);
+        toast.success("Student updated", { id: toastId });
+        navigate(`/admin/faculty-data/${facultyId}`);
       }
-    } catch (err) {
-      toast.error("Something went wrong", { id: toastId });
+    } catch (error) {
+      toast.success("Student created", { id: toastId });
     }
   };
+
+  if (facultyIsLoading) {
+    return (
+      <Spin tip="Loading...">
+        <Alert
+          message="Wait......"
+          description="Please wait for loading faculty details."
+          type="success"
+        />
+      </Spin>
+    );
+  }
 
   return (
     <Row justify="center">
       <Col span={24}>
-        <PHForm onSubmit={onSubmit}>
+        <PHForm onSubmit={onSubmit} defaultValues={facultyDetails?.data}>
           <Divider>Personal Info.</Divider>
           <Row gutter={8}>
             <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
@@ -69,7 +94,7 @@ const CreateFaculty = () => {
               <PHSelect options={genderOptions} name="gender" label="Gender" />
             </Col>
             <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
-              <PHDatePicker name="dateOfBirth" label="Date of birth" />
+              <PHDatePicker name="birthday" label="Date of birth" />
             </Col>
             <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
               <PHSelect
@@ -80,21 +105,6 @@ const CreateFaculty = () => {
             </Col>
             <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
               <PHInput type="text" name="designation" label="Designation" />
-            </Col>
-            <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
-              <Controller
-                name="image"
-                render={({ field: { onChange, value, ...field } }) => (
-                  <Form.Item label="Picture">
-                    <Input
-                      type="file"
-                      value={value?.fileName}
-                      {...field}
-                      onChange={(e) => onChange(e.target.files?.[0])}
-                    />
-                  </Form.Item>
-                )}
-              />
             </Col>
           </Row>
           <Divider>Contact Info.</Divider>
@@ -133,7 +143,7 @@ const CreateFaculty = () => {
               <PHSelect
                 options={departmentOptions}
                 disabled={dIsLoading}
-                name="academicDepartment"
+                name="academicDepartment._id"
                 label="Admission Department"
               />
             </Col>
@@ -146,4 +156,4 @@ const CreateFaculty = () => {
   );
 };
 
-export default CreateFaculty;
+export default FacultyUpdate;
