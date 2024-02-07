@@ -119,6 +119,57 @@ const userManagementApi = baseApi.injectEndpoints({
       },
       invalidatesTags: ["user-management"],
     }),
+    getAllAdmins: builder.query({
+      query: (args) => {
+        const params = new URLSearchParams();
+
+        if (args) {
+          args.forEach((item: TQueryParam) => {
+            params.append(item.name, item.value as string);
+          });
+        }
+
+        return {
+          url: "/admins",
+          method: "GET",
+          params: params,
+        };
+      },
+      transformResponse: (response: TResponseRedux<TStudent[]>) => {
+        return {
+          data: response.data,
+          meta: response.meta,
+        };
+      },
+      providesTags: ["user-management"],
+    }),
+    addAdmin: builder.mutation({
+      query: (data) => {
+        return {
+          url: `/users/create-admin`,
+          method: "POST",
+          body: data,
+        };
+      },
+      invalidatesTags: ["user-management"],
+    }),
+    getAdminDetails: builder.query({
+      query: (adminId) => ({
+        url: `/admins/${adminId}`,
+        method: "GET",
+      }),
+      providesTags: ["user-management"],
+    }),
+    updateAdminDetails: builder.mutation({
+      query: ({ adminData, adminId }) => {
+        return {
+          url: `/admins/${adminId}`,
+          method: "PATCH",
+          body: adminData,
+        };
+      },
+      invalidatesTags: ["user-management"],
+    }),
   }),
 });
 
@@ -132,4 +183,8 @@ export const {
   useGetAllFacultiesQuery,
   useGetFacultyDetailsQuery,
   useUpdateFacultyDetailsMutation,
+  useAddAdminMutation,
+  useGetAllAdminsQuery,
+  useGetAdminDetailsQuery,
+  useUpdateAdminDetailsMutation,
 } = userManagementApi;

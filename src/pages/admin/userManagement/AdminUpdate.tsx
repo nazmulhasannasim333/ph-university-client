@@ -8,55 +8,44 @@ import {
   bloodGroupOptions,
   genderOptions,
 } from "../../../constants/user.const";
-import { useGetAllAcademicDepartmentQuery } from "../../../redux/features/admin/academicManagementApi";
 import {
-  useGetFacultyDetailsQuery,
-  useUpdateFacultyDetailsMutation,
+  useGetAdminDetailsQuery,
+  useUpdateAdminDetailsMutation,
 } from "../../../redux/features/admin/userManagementApi";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
-import { TFaculty, TResponse } from "../../../types";
+import { TAdmin, TResponse } from "../../../types";
 
-const FacultyUpdate = () => {
-  const [updateFaculty] = useUpdateFacultyDetailsMutation();
+const AdminUpdate = () => {
+  const [updateAdmin] = useUpdateAdminDetailsMutation();
   const navigate = useNavigate();
-  const { facultyId } = useParams();
+  const { adminId } = useParams();
   const { data: facultyDetails, isLoading: facultyIsLoading } =
-    useGetFacultyDetailsQuery(facultyId);
-  const { data: dData, isLoading: dIsLoading } =
-    useGetAllAcademicDepartmentQuery(undefined);
-
-  const departmentOptions = dData?.data?.map((item) => ({
-    value: item._id,
-    label: item.name,
-  }));
+    useGetAdminDetailsQuery(adminId);
 
   const onSubmit = async (data: FieldValues) => {
-    const toastId = toast.loading("Updating faculty...");
-    const academicDepartment = data.academicDepartment._id;
+    const toastId = toast.loading("Updating admin...");
     const dateOfBirth = data.birthday;
 
-    const facultyFields = {
+    const adminFields = {
       ...data,
-      academicDepartment,
       dateOfBirth,
     };
 
-    const facultyData = {
-      faculty: facultyFields,
+    const adminData = {
+      admin: adminFields,
     };
 
     try {
-      const res = (await updateFaculty({
-        facultyData,
-        facultyId,
-      })) as TResponse<TFaculty>;
-      console.log(res);
+      const res = (await updateAdmin({
+        adminData,
+        adminId,
+      })) as TResponse<TAdmin>;
       if (res.error) {
         toast.error(res.error.data.message, { id: toastId });
       } else {
-        toast.success("Student updated", { id: toastId });
-        navigate(`/admin/faculty-data/${facultyId}`);
+        toast.success("Admin updated", { id: toastId });
+        navigate(`/admin/admin-data/${adminId}`);
       }
     } catch (error) {
       toast.error("Something went wrong...", { id: toastId });
@@ -137,18 +126,6 @@ const FacultyUpdate = () => {
               />
             </Col>
           </Row>
-          <Divider>Academic Info.</Divider>
-          <Row gutter={8}>
-            <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
-              <PHSelect
-                options={departmentOptions}
-                disabled={dIsLoading}
-                name="academicDepartment._id"
-                label="Admission Department"
-              />
-            </Col>
-          </Row>
-
           <Button htmlType="submit">Submit</Button>
         </PHForm>
       </Col>
@@ -156,4 +133,4 @@ const FacultyUpdate = () => {
   );
 };
 
-export default FacultyUpdate;
+export default AdminUpdate;

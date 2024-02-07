@@ -28,13 +28,13 @@ const CreateFaculty = () => {
 
   const onSubmit = async (data: FieldValues) => {
     const toastId = toast.loading("Creating faculty...");
-    const studentData = {
+    const facultyData = {
       password: "faculty123",
       faculty: data,
     };
 
     const formData = new FormData();
-    formData.append("data", JSON.stringify(studentData));
+    formData.append("data", JSON.stringify(facultyData));
     formData.append("file", data.image);
     try {
       const res = (await addFaculty(formData)) as TResponse<TFaculty>;

@@ -71,7 +71,7 @@ const StudentUpdate = () => {
         navigate(`/admin/student-data/${studentId}`);
       }
     } catch (error) {
-      toast.success("Student created", { id: toastId });
+      toast.error("Something went wrong...", { id: toastId });
     }
   };
 

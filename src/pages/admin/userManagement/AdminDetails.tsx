@@ -1,23 +1,22 @@
 import { Alert, Card, Col, Divider, Image, Row, Spin } from "antd";
 import { useParams } from "react-router-dom";
-import { useGetFacultyDetailsQuery } from "../../../redux/features/admin/userManagementApi";
+import { useGetAdminDetailsQuery } from "../../../redux/features/admin/userManagementApi";
 import Title from "antd/es/typography/Title";
 import moment from "moment";
 
-const FacultyDetails = () => {
-  const { facultyId } = useParams();
-  const { data: FacultyDetails, isFetching } =
-    useGetFacultyDetailsQuery(facultyId);
-  const details = FacultyDetails?.data;
-
-  // console.log(details);
+const AdminDetails = () => {
+  const { adminId } = useParams();
+  const { data: AdminDetails, isFetching } = useGetAdminDetailsQuery(adminId);
+  const details = AdminDetails?.data;
+  console.log(adminId);
+  console.log(details);
 
   if (isFetching) {
     return (
       <Spin tip="Loading...">
         <Alert
           message="Wait......"
-          description="Please wait for loading faculty details."
+          description="Please wait for loading admin details."
           type="success"
         />
       </Spin>
@@ -66,7 +65,7 @@ const FacultyDetails = () => {
         </Row>
         <Divider />
         <Row gutter={20}>
-          <Col span={24} md={{ span: 12 }} lg={{ span: 12 }}>
+          <Col span={24} md={{ span: 12 }} lg={{ span: 24 }}>
             <Divider>Contact Info.</Divider>
             <Title level={5}>
               Email: {}
@@ -95,26 +94,10 @@ const FacultyDetails = () => {
               </span>
             </Title>
           </Col>
-          <Col span={24} md={{ span: 12 }} lg={{ span: 12 }}>
-            <Divider>Academic Info.</Divider>
-
-            <Title level={5}>
-              Academic Department: {}
-              <span style={{ color: "#736d6d" }}>
-                {details?.academicDepartment?.name}
-              </span>
-            </Title>
-            <Title level={5}>
-              Academic Faculty: {}
-              <span style={{ color: "#736d6d" }}>
-                {details?.academicFaculty?.name}
-              </span>
-            </Title>
-          </Col>
         </Row>
       </Card>
     </>
   );
 };
 
-export default FacultyDetails;
+export default AdminDetails;

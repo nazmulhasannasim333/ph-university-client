@@ -82,3 +82,22 @@ export type TFaculty = {
   __v: number;
   fullName: string;
 };
+
+export type TAdmin = {
+  _id: string;
+  id: string;
+  user: TUser;
+  designation: string;
+  name: TName;
+  gender: string;
+  dateOfBirth: string;
+  email: string;
+  contactNo: string;
+  emergencyContactNo: string;
+  bloodGroup: string;
+  presentAddress: string;
+  permanentAddress: string;
+  profileImg: string;
+  isDeleted: boolean;
+  fullName: string;
+};
