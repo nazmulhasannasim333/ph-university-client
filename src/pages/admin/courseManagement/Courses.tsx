@@ -43,25 +43,8 @@ const Courses = () => {
     },
   ];
 
-  // const onChange: TableProps<TTableData>['onChange'] = (
-  //   _pagination,
-  //   filters,
-  //   _sorter,
-  //   extra
-  // ) => {
-  //   if (extra.action === 'filter') {
-  //     const queryParams: TQueryParam[] = [];
-  //     setParams(queryParams);
-  //   }
-  // };
-
   return (
-    <Table
-      loading={isFetching}
-      columns={columns}
-      dataSource={tableData}
-      // onChange={onChange}
-    />
+    <Table loading={isFetching} columns={columns} dataSource={tableData} />
   );
 };
 

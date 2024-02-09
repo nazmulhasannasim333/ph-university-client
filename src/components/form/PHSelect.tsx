@@ -12,7 +12,7 @@ type TPhSelectProps = {
       }[]
     | undefined;
   disabled?: boolean;
-  mode: "multiple" | undefined;
+  mode?: "multiple" | undefined;
 };
 
 const PHSelect = ({ label, name, options, disabled, mode }: TPhSelectProps) => {

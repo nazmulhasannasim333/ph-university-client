@@ -6,6 +6,7 @@ import {
 import moment from "moment";
 import { TSemester } from "../../../types";
 import { useState } from "react";
+import { FieldValues } from "react-hook-form";
 export type TTableData = Pick<TSemester, "startDate" | "endDate" | "status">;
 
 const items = [
@@ -43,7 +44,7 @@ const RegisteredSemesters = () => {
     })
   );
 
-  const handleStatusUpdate = (data) => {
+  const handleStatusUpdate = (data: FieldValues) => {
     const updateData = {
       id: semesterId,
       data: {

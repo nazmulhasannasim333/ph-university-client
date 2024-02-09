@@ -21,3 +21,20 @@ export type TCourse = {
   preRequisiteCourses: { course: string | null; isDeleted: boolean }[];
   isDeleted: boolean;
 };
+
+export type TOfferedCourse = {
+  _id: string;
+  semesterRegistration: string;
+  academicSemester: string;
+  academicFaculty: string;
+  academicDepartment: string;
+  course: string;
+  faculty: string;
+  maxCapacity: number;
+  section: number;
+  days: string[];
+  startTime: string;
+  endTime: string;
+  createdAt: string;
+  updatedAt: string;
+};

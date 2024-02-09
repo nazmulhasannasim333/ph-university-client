@@ -28,6 +28,7 @@ const academicManagementApi = baseApi.injectEndpoints({
           meta: response.meta,
         };
       },
+      providesTags: ["academic-management"],
     }),
     addAcademicSemester: builder.mutation({
       query: (data) => ({
@@ -35,6 +36,7 @@ const academicManagementApi = baseApi.injectEndpoints({
         method: "POST",
         body: data,
       }),
+      invalidatesTags: ["academic-management"],
     }),
     getAllAcademicFaculty: builder.query({
       query: () => {
@@ -49,6 +51,7 @@ const academicManagementApi = baseApi.injectEndpoints({
           meta: response.meta,
         };
       },
+      providesTags: ["academic-management"],
     }),
     addAcademicFaculty: builder.mutation({
       query: (data) => ({
@@ -56,6 +59,7 @@ const academicManagementApi = baseApi.injectEndpoints({
         method: "POST",
         body: data,
       }),
+      invalidatesTags: ["academic-management"],
     }),
     getAllAcademicDepartment: builder.query({
       query: () => {
@@ -70,6 +74,16 @@ const academicManagementApi = baseApi.injectEndpoints({
           meta: response.meta,
         };
       },
+      providesTags: ["academic-management"],
+    }),
+    getSingleAcademicDepartment: builder.query({
+      query: (departmentId) => {
+        return {
+          url: `/academic-department/${departmentId}`,
+          method: "GET",
+        };
+      },
+      providesTags: ["academic-management"],
     }),
     addAcademicDepartment: builder.mutation({
       query: (data) => ({
@@ -77,6 +91,7 @@ const academicManagementApi = baseApi.injectEndpoints({
         method: "POST",
         body: data,
       }),
+      invalidatesTags: ["academic-management"],
     }),
   }),
 });
@@ -88,4 +103,5 @@ export const {
   useAddAcademicFacultyMutation,
   useGetAllAcademicDepartmentQuery,
   useAddAcademicDepartmentMutation,
+  useGetSingleAcademicDepartmentQuery,
 } = academicManagementApi;
