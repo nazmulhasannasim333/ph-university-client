@@ -1,4 +1,9 @@
-import { TAcademicSemester } from ".";
+import {
+  TAcademicDepartment,
+  TAcademicFaculty,
+  TAcademicSemester,
+  TFaculty,
+} from ".";
 
 export type TSemester = {
   _id: string;
@@ -24,12 +29,12 @@ export type TCourse = {
 
 export type TOfferedCourse = {
   _id: string;
-  semesterRegistration: string;
-  academicSemester: string;
-  academicFaculty: string;
-  academicDepartment: string;
-  course: string;
-  faculty: string;
+  semesterRegistration: TSemester;
+  academicSemester: TAcademicSemester;
+  academicFaculty: TAcademicFaculty;
+  academicDepartment: TAcademicDepartment;
+  course: TCourse;
+  faculty: TFaculty;
   maxCapacity: number;
   section: number;
   days: string[];

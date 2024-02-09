@@ -22,7 +22,7 @@ import RegisteredSemesters from "../pages/admin/courseManagement/RegisteredSemes
 import CreateCourse from "../pages/admin/courseManagement/CreateCourse";
 import Courses from "../pages/admin/courseManagement/Courses";
 import OfferCourse from "../pages/admin/courseManagement/OfferCourse";
-import OfferedCourse from "../pages/faculty/OfferedCourse";
+import OfferedCourse from "../pages/admin/courseManagement/OfferedCourses";
 
 export const adminPaths = [
   {

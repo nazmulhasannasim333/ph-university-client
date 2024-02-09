@@ -13,8 +13,6 @@ import { TResponse } from "../../../types";
 import { toast } from "sonner";
 
 const Courses = () => {
-  // const [params, setParams] = useState<TQueryParam[] | undefined>(undefined);
-
   const { data: courses, isFetching } = useGetAllCoursesQuery(undefined);
 
   const tableData = courses?.data?.map(({ _id, title, prefix, code }) => ({

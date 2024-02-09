@@ -19,6 +19,8 @@ import PHInput from "../../../components/form/PHInput";
 import { daysOptions } from "../../../constants/course.const";
 import { TOfferedCourse, TResponse } from "../../../types";
 import { toast } from "sonner";
+import PHTimePicker from "../../../components/form/PHTimePicker";
+import moment from "moment";
 
 type OptionType = {
   value: string;
@@ -39,9 +41,11 @@ const OfferCourse = () => {
   const { data: academicDepartment } =
     useGetAllAcademicDepartmentQuery(undefined);
   const { data: academicDepartmentFaculty } =
-    useGetSingleAcademicDepartmentQuery(departmentId);
+    useGetSingleAcademicDepartmentQuery(departmentId, { skip: !departmentId });
   const { data: courses } = useGetAllCoursesQuery(undefined);
-  const { data: courseFaculties } = useGetCourseFacultiesQuery(courseId);
+  const { data: courseFaculties } = useGetCourseFacultiesQuery(courseId, {
+    skip: !courseId,
+  });
 
   const semesterRegistrationOptions = semesterRegistrationData?.data?.map(
     ({ _id, academicSemester }) => ({
@@ -82,11 +86,13 @@ const OfferCourse = () => {
     const toastId = toast.loading("Creating offered course...");
     const offeredCourse = {
       ...data,
+      startTime: moment(Number(data.startTime)).format("H:m"),
+      endTime: moment(Number(data.endTime)).format("H:m"),
       maxCapacity: Number(data.maxCapacity),
       section: Number(data.section),
     };
 
-    console.log(data);
+    console.log({ offeredCourse, data });
 
     try {
       const res = (await addOfferedCourse(
@@ -144,8 +150,8 @@ const OfferCourse = () => {
             label="Days"
             options={daysOptions}
           />
-          <PHInput type="text" name="startTime" label="Start Time" />
-          <PHInput type="text" name="endTime" label="End Time" />
+          <PHTimePicker name="startTime" label="Start Time" />
+          <PHTimePicker name="endTime" label="End Time" />
           <Button htmlType="submit">Submit</Button>
         </PHForm>
       </Col>

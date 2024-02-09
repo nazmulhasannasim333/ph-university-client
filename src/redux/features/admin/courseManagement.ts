@@ -1,5 +1,6 @@
 import {
   TCourse,
+  TOfferedCourse,
   TQueryParam,
   TResponseRedux,
   TSemester,
@@ -107,6 +108,30 @@ const courseManagementApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["courses"],
     }),
+    getAllOfferedCourses: builder.query({
+      query: (args) => {
+        const params = new URLSearchParams();
+
+        if (args) {
+          args.forEach((item: TQueryParam) => {
+            params.append(item.name, item.value as string);
+          });
+        }
+
+        return {
+          url: "/offered-courses",
+          method: "GET",
+          params: params,
+        };
+      },
+      providesTags: ["courses"],
+      transformResponse: (response: TResponseRedux<TOfferedCourse[]>) => {
+        return {
+          data: response.data,
+          meta: response.meta,
+        };
+      },
+    }),
   }),
 });
 
@@ -119,4 +144,5 @@ export const {
   useAddFacultiesMutation,
   useGetCourseFacultiesQuery,
   useAddOfferedCourseMutation,
+  useGetAllOfferedCoursesQuery,
 } = courseManagementApi;
