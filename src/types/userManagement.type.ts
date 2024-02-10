@@ -10,7 +10,7 @@ export interface TStudent {
   email: string;
   contactNo: string;
   emergencyContactNo: string;
-  bloogGroup: string;
+  bloodGroup: string;
   presentAddress: string;
   permanentAddress: string;
   guardian: TGuardian;
