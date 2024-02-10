@@ -7,6 +7,7 @@ import { routeGenerator } from "../utils/routesGenerator";
 import { studentPaths } from "./student.routes";
 import { facultyPaths } from "./faculty.routes";
 import ProtectedRoute from "../components/layout/ProtectedRoute";
+import ChangePassword from "../pages/ChangePassword";
 
 const router = createBrowserRouter([
   {
@@ -47,6 +48,10 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <Login />,
+  },
+  {
+    path: "/change-password",
+    element: <ChangePassword />,
   },
 ]);
 

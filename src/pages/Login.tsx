@@ -31,8 +31,16 @@ const Login = () => {
       const res = await login(userInfo).unwrap();
       const user = verifyToken(res.data.accessToken) as TUser;
       dispatch(setUser({ user, token: res.data.accessToken }));
-      toast.success("Logged in", { id: toastId, duration: 2000 });
-      navigate(`/${user.role}/dashboard`);
+      if (res?.data?.needsPasswordChange) {
+        toast.info("Change your default password", {
+          id: toastId,
+          duration: 2000,
+        });
+        navigate(`/change-password`);
+      } else {
+        toast.success("Logged in", { id: toastId, duration: 2000 });
+        navigate(`/${user.role}/dashboard`);
+      }
     } catch (error) {
       toast.error("Something went wrong", { id: toastId, duration: 2000 });
     }
