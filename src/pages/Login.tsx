@@ -14,8 +14,8 @@ const Login = () => {
   const navigate = useNavigate();
 
   const defaultValues = {
-    userId: "PH2026010001",
-    password: "student123",
+    userId: "PH2026030001",
+    password: "123456",
   };
 
   const [login] = useLoginMutation();

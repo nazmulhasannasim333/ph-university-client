@@ -1,12 +1,12 @@
+// /* eslint-disable @typescript-eslint/no-explicit-any */
+import { useGetMyAllEnrolledCoursesQuery } from "../../redux/features/student/studentCourseManagementApi";
 import { Table } from "antd";
-import { useGetAllOfferedCoursesQuery } from "../../../redux/features/admin/courseManagement";
 
-const OfferedCourse = () => {
-  const { data: offeredCourses, isFetching } =
-    useGetAllOfferedCoursesQuery(undefined);
-  console.log(offeredCourses);
+const MySchedule = () => {
+  const { data, isFetching } = useGetMyAllEnrolledCoursesQuery(undefined);
+  console.log(data);
 
-  const tableData = offeredCourses?.data?.map(
+  const tableData = data?.data?.map(
     ({
       _id,
       academicDepartment,
@@ -14,15 +14,21 @@ const OfferedCourse = () => {
       academicSemester,
       course,
       faculty,
-      maxCapacity,
+      student,
+      offeredCourse,
+      grade,
+      gradePoints,
     }) => ({
       key: _id,
       academicDepartment: academicDepartment?.name,
       academicFaculty: academicFaculty?.name,
       academicSemester: `${academicSemester?.name} ${academicSemester.year}`,
       course: course?.title,
-      faculty: faculty.fullName,
-      maxCapacity,
+      faculty: faculty?.fullName,
+      student: student?.fullName,
+      section: offeredCourse.section,
+      grade,
+      gradePoints,
     })
   );
 
@@ -53,9 +59,24 @@ const OfferedCourse = () => {
       dataIndex: "faculty",
     },
     {
-      title: "Max Capacity",
-      key: "maxCapacity",
-      dataIndex: "maxCapacity",
+      title: "Student",
+      key: "student",
+      dataIndex: "student",
+    },
+    {
+      title: "Sections",
+      key: "section",
+      dataIndex: "section",
+    },
+    {
+      title: "Grade Points",
+      key: "gradePoints",
+      dataIndex: "gradePoints",
+    },
+    {
+      title: "Grade",
+      key: "grade",
+      dataIndex: "grade",
     },
   ];
 
@@ -64,4 +85,4 @@ const OfferedCourse = () => {
   );
 };
 
-export default OfferedCourse;
+export default MySchedule;

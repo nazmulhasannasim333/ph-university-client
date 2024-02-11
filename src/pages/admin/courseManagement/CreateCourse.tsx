@@ -37,11 +37,8 @@ const CreateCourse = () => {
         : [],
     };
 
-    console.log(courseData);
-
     try {
       const res = (await createCourse(courseData)) as TResponse<TCourse>;
-      console.log(res);
       if (res.error) {
         toast.error(res.error.data.message, { id: toastId });
       } else {
