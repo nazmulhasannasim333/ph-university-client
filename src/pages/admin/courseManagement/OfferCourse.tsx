@@ -36,8 +36,10 @@ const OfferCourse = () => {
 
   const [addOfferedCourse] = useAddOfferedCourseMutation();
 
-  const { data: semesterRegistrationData } =
-    useGetAllRegisteredSemestersQuery(undefined);
+  const { data: semesterRegistrationData } = useGetAllRegisteredSemestersQuery([
+    { name: "sort", value: "year" },
+    { name: "status", value: "UPCOMING" },
+  ]);
   const { data: academicDepartment } =
     useGetAllAcademicDepartmentQuery(undefined);
   const { data: academicDepartmentFaculty } =
